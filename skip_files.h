@@ -1,6 +1,9 @@
 #include <dirent.h>
 #include <fstream>
-
+#include <iostream>
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+using namespace std;
 void skip_files()
 {
   std::string src_dir("/home/alexaway/Desktop/data/");
@@ -23,4 +26,32 @@ void skip_files()
       }
     }
   }
+}
+
+void copy(string from, string to)
+{
+  fs::path f(from);
+  fs::path t(to);
+  int count =0;
+  for(auto &p : fs::directory_iterator(f)){
+    if(count++ % 10 == 0){
+      fs::copy_file(p, t / p.path().filename());
+    }
+  }
+}
+void copy_recursively_to_one_directory(string from,string to)
+{
+  fs::path f(from);
+  fs::path t(to);
+  for(auto &p : fs::recursive_directory_iterator(f)){
+    if(fs::is_directory(p))continue;
+    fs::copy_file(p, t / p.path().filename());
+  }
+}
+
+void copy_recursively(string from, string to)
+{
+  fs::path f(from);
+  fs::path t(to);
+  fs::copy(f,t,fs::copy_options::recursive);
 }
