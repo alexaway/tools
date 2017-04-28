@@ -1,6 +1,7 @@
 #include <iostream>
+#include "skip_files.h"
 
 int main() {
-  std::cout << "Hello, World!" << std::endl;
+  skip_files();
   return 0;
 }
